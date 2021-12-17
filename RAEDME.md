@@ -27,3 +27,8 @@ export AWS_REGION=eu-west-1
 ########  tkg mgmt configuration #######
 
 ```
+
+run: 
+terraform init 
+terraform plan 
+terraform apply 
