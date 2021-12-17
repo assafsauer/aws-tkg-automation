@@ -4,7 +4,6 @@ variable "awsprops" {
     itype = "t3.large"
     publicip = true
     keyname = "sauer-key"
-    secgroupname = "sec-group-1"
     availability_zone = "eu-west-1a"
   }
 }
