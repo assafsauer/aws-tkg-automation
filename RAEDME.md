@@ -1,4 +1,6 @@
 
+
+```diff
 edit the main.tf (mandatory var is only the key)
 
 variable "awsprops" {
@@ -24,3 +26,4 @@ export AWS_REGION=eu-west-1
 
 ########  tkg mgmt configuration #######
 
+```
