@@ -1,4 +1,4 @@
-# Automating TKG manager cluster with Terraform
+# Automating TKG manager cluster on AWS with a click of a button
 
 ```diff
 edit the main.tf (mandatory var is only the key)
