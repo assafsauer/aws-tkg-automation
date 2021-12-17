@@ -1,4 +1,4 @@
-# automating TKG manager cluster with a click
+# Automating TKG manager cluster with Terraform
 
 ```diff
 edit the main.tf (mandatory var is only the key)
@@ -13,7 +13,7 @@ variable "awsprops" {
   }
 }
 
-edit the prep.sh (add aws temp access) and you might want to modify the cluster yaml
+edit the prep.sh (add aws temp access)  
 
 
 ###### aws temporary access #######
@@ -24,11 +24,9 @@ export AWS_SESSION_TOKEN=IQoJb3JpZ2luX2VjELbxxxLxxxxxxx
 export AWS_REGION=eu-west-1
  
 
-########  tkg mgmt configuration #######
-
-```
-
 run: 
 terraform init 
 terraform plan 
 terraform apply 
+
+```
