@@ -7,6 +7,9 @@ sleep 30
  export AWS_SECRET_ACCESS_KEY=7lqB4jx47kEXkxxxxx
  export AWS_SESSION_TOKEN=IQoJb3JpZ2luX2VjELb//////////wEaCXVzLxxxxxxx
  
+ export AWS_REGION=eu-west-1
+ 
+ 
  
 apt install unzip
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
@@ -64,5 +67,6 @@ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubun
 
 apt install docker-ce -y
 
+tanzu management-cluster permissions aws set
 
 #tanzu management-cluster create -b 192.168.1.76:80 --ui 6
