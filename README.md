@@ -1,7 +1,7 @@
 ## PART 1: Automating TKG manager cluster on AWS with a click of a button
 
 ```diff
-edit the main.tf (mandatory var is only the key)
+1) edit the main.tf (mandatory var is only the key)
 
 variable "awsprops" {
     default = {
@@ -13,16 +13,15 @@ variable "awsprops" {
   }
 }
 
-edit the prep.sh (add aws temp access)  
+2) edit the prep.sh (add aws temp access)  
 
-
-###### aws temporary access #######
 
 export AWS_ACCESS_KEY_ID=ASIAxxxxx
 export AWS_SECRET_ACCESS_KEY=7lqB4jx47kEXkxxxxx
 export AWS_SESSION_TOKEN=IQoJb3JpZ2luX2VjELbxxxLxxxxxxx
 export AWS_REGION=eu-west-1
- 
+
+3) export your AWS access and run terraform 
 
 run: 
 terraform init 
