@@ -1,4 +1,4 @@
-# Automating TKG manager cluster on AWS with a click of a button
+*** PART 1: Automating TKG manager cluster on AWS with a click of a button
 
 ```diff
 edit the main.tf (mandatory var is only the key)
@@ -30,3 +30,4 @@ terraform plan
 terraform apply 
 
 ```
+*** PART 1: Automating TAP installation 
