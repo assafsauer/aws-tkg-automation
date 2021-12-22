@@ -17,22 +17,38 @@ resource "aws_vpc" "ownvpc" {
   cidr_block       = "192.168.0.0/16"
   instance_tenancy = "default"
   enable_dns_hostnames = true
+
+tags = {
+    Name = "tkg_vpc"
+  }
 }
 
 resource "aws_subnet" "public" {
   vpc_id     = aws_vpc.ownvpc.id
   cidr_block = "192.168.2.0/24"
   availability_zone = lookup(var.awsprops, "availability_zone") 
+
+tags = {
+    Name = "tkg_public_sub"
+  }
 }
 
 resource "aws_subnet" "private" {
     vpc_id = aws_vpc.ownvpc.id
     cidr_block = "192.168.0.0/24"
     availability_zone = lookup(var.awsprops, "availability_zone") 
+
+tags = {
+    Name = "tkg_private_sub"
+  }
 }
 
 resource "aws_internet_gateway" "mygw" {
   vpc_id = aws_vpc.ownvpc.id
+
+tags = {
+    Name = "tkg_gw"
+  }
 }
 
 resource "aws_route_table" "my_route_table1" {
@@ -43,11 +59,17 @@ resource "aws_route_table" "my_route_table1" {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.mygw.id
   }
+
+tags = {
+    Name = "tkg_route"
+  }
 }
+
 
 resource "aws_route_table_association" "route_table_association1" {
   subnet_id      = aws_subnet.public.id
   route_table_id = aws_route_table.my_route_table1.id
+
 }
 
 
@@ -60,12 +82,19 @@ resource "aws_route_table" "my_route_table2" {
     cidr_block = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.mynatgw.id
   }
+
+tags = {
+    Name = "tkg_route_table"
+  }
 }
 
 resource "aws_eip" "nat" {
   vpc      = true
   depends_on = [aws_internet_gateway.mygw,]
 
+tags = {
+    Name = "tkg_nat"
+  }
 }
 
 resource "aws_nat_gateway" "mynatgw" {
@@ -73,6 +102,9 @@ resource "aws_nat_gateway" "mynatgw" {
   subnet_id     = aws_subnet.public.id
   depends_on = [aws_internet_gateway.mygw,]
 
+tags = {
+    Name = "tkg_nat_gw"
+  }
 }
 
 
@@ -128,7 +160,7 @@ resource "aws_security_group" "mywebsecurity" {
   }
   
   tags = {
-    Name = "myweb_sg"
+    Name = "tkg_security_group"
   }
 }
 
@@ -167,6 +199,9 @@ tags = {
     Name = "tkg"
   }
 
+  root_block_device {
+    volume_size = "30"
+  }
 
 }
 
