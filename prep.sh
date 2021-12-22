@@ -5,11 +5,12 @@ sleep 30
 
 ###### aws temporary access #######
 
-export AWS_ACCESS_KEY_ID=ASIAxxxxx
-export AWS_SECRET_ACCESS_KEY=7lqB4jx47kEXkxxxxx
-export AWS_SESSION_TOKEN=IQoJb3JpZ2luX2VjELbxxxLxxxxxxx
+
+
+export AWS_ACCESS_KEY_ID=XXXXXX
+export AWS_SECRET_ACCESS_KEY=XXXX
+export AWS_SESSION_TOKEN=XXXXX
 export AWS_REGION=eu-west-1
- 
 
 ########  tkg mgmt configuration ########
 
@@ -134,7 +135,10 @@ tanzu management-cluster permissions aws set
 
 sleep 10 
 
-#tanzu management-cluster create -b 192.168.1.76:80 --ui 6
-
-
 tanzu management-cluster create --file mgmt.yaml -v 6
+
+sleep 30 
+
+tanzu management-cluster upgrade -y
+
+echo "mgmt cluster is up2date"
