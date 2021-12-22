@@ -1,45 +1,51 @@
-
 #!/bin/sh
 
 sleep 30
 
 ###### aws temporary access #######
 
-
-
-export AWS_ACCESS_KEY_ID=XXXXXX
-export AWS_SECRET_ACCESS_KEY=XXXX
-export AWS_SESSION_TOKEN=XXXXX
+export AWS_ACCESS_KEY_ID=ASIA3XXXX
+export AWS_SECRET_ACCESS_KEY=XlMXXXX
+export AWS_SESSION_TOKEN=IQoJbXXXXXX 
 export AWS_REGION=eu-west-1
 
-########  tkg mgmt configuration ########
+# Specify VPC ID and subnets to use an existing VPC
+VPC_ID=vpc-
+PRIVATE_SUBNET=subnet-
+PUBLIC_SUBNET=subnet-
+KEY_PAIR=sauer-key
+REGION=eu-west-1
+NODE_AZ=${REGION}a
+AWS_AMI=ami-08ca3fed11864d6bb
 
-cat > mgmt.yaml << EOF
-AWS_AMI_ID: ami-0f210a57e0be8c9ef
-AWS_NODE_AZ: eu-west-1a
+
+########  tkg mgmt configuration ########
+cat > vpc-mgmt.yaml << EOF
+AWS_AMI_ID: ${AWS_AMI}
+AWS_NODE_AZ: ${NODE_AZ}
 AWS_NODE_AZ_1: ""
 AWS_NODE_AZ_2: ""
-AWS_PRIVATE_NODE_CIDR: 10.0.16.0/20
+AWS_PRIVATE_NODE_CIDR: ""
 AWS_PRIVATE_NODE_CIDR_1: ""
 AWS_PRIVATE_NODE_CIDR_2: ""
-AWS_PRIVATE_SUBNET_ID: ""
+AWS_PRIVATE_SUBNET_ID: ${PRIVATE_SUBNET}
 AWS_PRIVATE_SUBNET_ID_1: ""
 AWS_PRIVATE_SUBNET_ID_2: ""
-AWS_PUBLIC_NODE_CIDR: 10.0.0.0/20
+AWS_PUBLIC_NODE_CIDR: ""
 AWS_PUBLIC_NODE_CIDR_1: ""
 AWS_PUBLIC_NODE_CIDR_2: ""
-AWS_PUBLIC_SUBNET_ID: ""
+AWS_PUBLIC_SUBNET_ID: ${PUBLIC_SUBNET}
 AWS_PUBLIC_SUBNET_ID_1: ""
 AWS_PUBLIC_SUBNET_ID_2: ""
-AWS_REGION: eu-west-1
-AWS_SSH_KEY_NAME: sauer-key
-AWS_VPC_CIDR: 10.0.0.0/16
-AWS_VPC_ID: ""
+AWS_REGION: ${REGION}
+AWS_SSH_KEY_NAME: ${KEY_PAIR}
+AWS_VPC_CIDR: ""
+AWS_VPC_ID: ${VPC_ID}
 BASTION_HOST_ENABLED: "false"
 CLUSTER_CIDR: 100.96.0.0/11
 CLUSTER_NAME: mgmt
 CLUSTER_PLAN: dev
-CONTROL_PLANE_MACHINE_TYPE: t2.large
+CONTROL_PLANE_MACHINE_TYPE: t3.xlarge
 ENABLE_AUDIT_LOGGING: ""
 ENABLE_CEIP_PARTICIPATION: "false"
 ENABLE_MHC: "true"
@@ -58,7 +64,7 @@ LDAP_USER_SEARCH_BASE_DN: ""
 LDAP_USER_SEARCH_FILTER: ""
 LDAP_USER_SEARCH_NAME_ATTRIBUTE: ""
 LDAP_USER_SEARCH_USERNAME: userPrincipalName
-NODE_MACHINE_TYPE: t2.xlarge
+NODE_MACHINE_TYPE: t3.xlarge
 OIDC_IDENTITY_PROVIDER_CLIENT_ID: ""
 OIDC_IDENTITY_PROVIDER_CLIENT_SECRET: ""
 OIDC_IDENTITY_PROVIDER_GROUPS_CLAIM: ""
@@ -84,12 +90,12 @@ aws s3 sync s3://installation-kit  /home/ubuntu
 
 tar -xvf tanzu-cli-bundle-linux-amd64-1.tar
 
-gzip -d kubectl-linux-v1.21.2+vmware.1-1.gz 
+gzip -d kubectl-linux-v1.21.2+vmware.1-1.gz
 gzip -d velero-linux-v1.6.2_vmware.1-1.gz
 
- 
 
-cd cli 
+
+cd cli
 sudo install core/v1.4.0/tanzu-core-linux_amd64 /usr/local/bin/tanzu
 
 cd ..
@@ -133,12 +139,12 @@ apt install docker-ce -y
 
 tanzu management-cluster permissions aws set
 
-sleep 10 
+sleep 10
 
-tanzu management-cluster create --file mgmt.yaml -v 6
+#tanzu management-cluster create --file vpc-mgmt.yaml -v 6
 
-sleep 30 
+#sleep 30
 
-tanzu management-cluster upgrade -y
+#tanzu management-cluster upgrade -y
 
 echo "mgmt cluster is up2date"
