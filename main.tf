@@ -14,7 +14,7 @@ provider "aws" {
 
 
 resource "aws_vpc" "ownvpc" {
-  cidr_block       = "192.168.0.0/16"
+  cidr_block       = "172.16.0.0/16"
   instance_tenancy = "default"
   enable_dns_hostnames = true
 
@@ -23,26 +23,30 @@ tags = {
   }
 }
 
+###### SUBNET PUBLIC ######
 resource "aws_subnet" "public" {
   vpc_id     = aws_vpc.ownvpc.id
-  cidr_block = "192.168.2.0/24"
+  cidr_block = "172.16.1.0/24"
   availability_zone = lookup(var.awsprops, "availability_zone") 
-
+  map_public_ip_on_launch = "true"
 tags = {
     Name = "tkg_public_sub"
   }
 }
 
+###### SUBNET PRIVATE ######
 resource "aws_subnet" "private" {
     vpc_id = aws_vpc.ownvpc.id
-    cidr_block = "192.168.0.0/24"
+    cidr_block = "172.16.2.0/24"
     availability_zone = lookup(var.awsprops, "availability_zone") 
-
+     map_public_ip_on_launch = "true"
 tags = {
     Name = "tkg_private_sub"
   }
 }
 
+
+###### GW ######
 resource "aws_internet_gateway" "mygw" {
   vpc_id = aws_vpc.ownvpc.id
 
@@ -51,6 +55,8 @@ tags = {
   }
 }
 
+
+###### toure all to internet gw ######
 resource "aws_route_table" "my_route_table1" {
   vpc_id = aws_vpc.ownvpc.id
 
@@ -65,13 +71,15 @@ tags = {
   }
 }
 
-
+###### PULIC SUB ROUTE-1 ######
 resource "aws_route_table_association" "route_table_association1" {
   subnet_id      = aws_subnet.public.id
   route_table_id = aws_route_table.my_route_table1.id
 
 }
 
+
+###### ROUTE-2 NAT GW ######
 
 resource "aws_route_table" "my_route_table2" {
   vpc_id = aws_vpc.ownvpc.id
@@ -97,6 +105,7 @@ tags = {
   }
 }
 
+###### NAT GW ######
 resource "aws_nat_gateway" "mynatgw" {
   allocation_id = aws_eip.nat.id
   subnet_id     = aws_subnet.public.id
@@ -105,6 +114,16 @@ resource "aws_nat_gateway" "mynatgw" {
 tags = {
     Name = "tkg_nat_gw"
   }
+}
+
+
+
+
+###### PRIVATE SUB ROUTE-1 ######
+## Private sub must be routed to nat gw for connecntivity 
+resource "aws_route_table_association" "route_table_association2-private" {
+  subnet_id      = aws_subnet.private.id
+  route_table_id = aws_route_table.my_route_table2.id
 }
 
 
