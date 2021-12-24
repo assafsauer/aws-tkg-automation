@@ -1,3 +1,8 @@
+## TKG/AWS Automation with TF
+
+![image](https://user-images.githubusercontent.com/22165556/147357567-d6fcf61a-1793-48b4-82ca-cc109801fdb5.png)
+
+
 ## PART 1: Automating TKG manager cluster on AWS with a click of a button
 
 ```diff
