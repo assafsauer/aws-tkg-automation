@@ -1,3 +1,11 @@
+# /bin/bash
+
+# tanzu cluster create tap-cluster --controlplane-machine-count 1 --worker-machine-count 3 -f mgmt.yaml
+# tanzu cluster kubeconfig get tap-cluster --admin
+
+
+### vars ###
+
 ### vars ###
 
 mgmt_cluster=mgmt
