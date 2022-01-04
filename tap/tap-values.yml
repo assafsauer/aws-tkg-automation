@@ -1,0 +1,94 @@
+profile: full
+
+buildservice:
+  kp_default_repository: "source-lab.io/tap/build-service"
+  kp_default_repository_username: "xxx"
+  kp_default_repository_password: "xxx"
+  tanzunet_username: "xxx"
+  tanzunet_password: "xxx"
+
+supply_chain: basic
+
+ootb_supply_chain_basic:
+  service_account: default
+  registry:
+    server: "source-lab.io"
+    repository: "tap/basic"
+
+ootb_supply_chain_testing:
+  registry:
+    server: "source-lab.io"
+    repository: "tap/basic"
+
+ootb_supply_chain_testing_scanning:
+  registry:
+    server: "source-lab.io"
+    repository: "tap/basic"
+
+cnrs:
+  ingress:
+    reuse_crds: true
+    external:
+      namespace: tanzu-system-ingress
+    internal:
+      namespace: tanzu-system-ingress
+  domain_name: source-lab.io
+  domain_template: "{{.Name}}-{{.Namespace}}.{{.Domain}}"
+
+
+#cnrs:
+  # default_tls_secret: "contour-tls/tls"
+#   domain_name: "source-lab.io" 
+#   domain_template: "{{.Name}}-{{.Namespace}}.{{.Domain}}"
+
+image_policy_webhook:
+   allow_unmatched_images: true
+
+learningcenter:
+  ingressDomain: "tap-learn.source-lab.io"
+  storageClass: "default"
+
+contour:
+  infrastructure_provider: aws
+  envoy:
+    service:
+      aws:
+        LBType: classic 
+
+
+tap_gui:
+  service_type: LoadBalancer
+  #ingressEnabled: "true"
+  #ingressDomain: tap-gui.source-lab.io
+  app_config:
+    organization:
+      name: asauer
+    app:
+      title: asauer
+      baseUrl: http://ae36d5b74e92d42ada937d7acade86fc-1672206364.eu-west-1.elb.amazonaws.com:7000
+    integrations:
+      github:
+      - host: github.com
+        token: xxx
+    catalog:
+      locations:
+        - type: url
+          target: https://github.com/assafsauer/tap-catalog/blob/main/catalog-info.yaml
+        #- type: url
+        #  target: https://github.com/assafsauer/tap-catalog/blob/main/catalog-info.yaml
+    backend:
+        baseUrl: http://ae36d5b74e92d42ada937d7acade86fc-1672206364.eu-west-1.elb.amazonaws.com:7000
+        cors:
+            origin: http://ae36d5b74e92d42ada937d7acade86fc-1672206364.eu-west-1.elb.amazonaws.com:7000
+
+ceip_policy_disclosed: true
+
+accelerator:
+  service_type: "LoadBalancer"
+
+appliveview:
+  connector_namespaces: [default]
+  service_type: LoadBalancer
+
+metadata_store:
+  app_service_type: LoadBalancer
