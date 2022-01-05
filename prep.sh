@@ -2,45 +2,54 @@
 
 sleep 30
 
+
+############################## vars ####################################
+
 ###### aws temporary access #######
 
-export AWS_ACCESS_KEY_ID=ASIA3XXXX
-export AWS_SECRET_ACCESS_KEY=XlMXXXX
-export AWS_SESSION_TOKEN=IQoJbXXXXXX 
+ export AWS_ACCESS_KEY_ID=XXXX
+ export AWS_SECRET_ACCESS_KEY=XXXX
+ export AWS_SESSION_TOKEN=XXXX
 export AWS_REGION=eu-west-1
 
-# Specify VPC ID and subnets to use an existing VPC
-VPC_ID=vpc-
-PRIVATE_SUBNET=subnet-
-PUBLIC_SUBNET=subnet-
+######### Specify key , region , ami 
+
 KEY_PAIR=sauer-key
 REGION=eu-west-1
-NODE_AZ=${REGION}a
 AWS_AMI=ami-08ca3fed11864d6bb
 
 
+############################## action ####################################
+
+
+######## will be created automaticly
+VPC_ID=vpc-xxx
+PRIVATE_SUBNET=subnet-xxx
+PUBLIC_SUBNET=subnet-xxxx
+NODE_AZ=${REGION}a
+
 ########  tkg mgmt configuration ########
 cat > vpc-mgmt.yaml << EOF
-AWS_AMI_ID: ${AWS_AMI}
-AWS_NODE_AZ: ${NODE_AZ}
+AWS_AMI_ID: ami-0f210a57e0be8c9ef
+AWS_NODE_AZ: eu-west-1a
 AWS_NODE_AZ_1: ""
 AWS_NODE_AZ_2: ""
 AWS_PRIVATE_NODE_CIDR: ""
 AWS_PRIVATE_NODE_CIDR_1: ""
 AWS_PRIVATE_NODE_CIDR_2: ""
-AWS_PRIVATE_SUBNET_ID: ${PRIVATE_SUBNET}
+AWS_PRIVATE_SUBNET_ID: ${PRIVATE_SUBNET}  
 AWS_PRIVATE_SUBNET_ID_1: ""
 AWS_PRIVATE_SUBNET_ID_2: ""
 AWS_PUBLIC_NODE_CIDR: ""
 AWS_PUBLIC_NODE_CIDR_1: ""
 AWS_PUBLIC_NODE_CIDR_2: ""
-AWS_PUBLIC_SUBNET_ID: ${PUBLIC_SUBNET}
+AWS_PUBLIC_SUBNET_ID: ${PUBLIC_SUBNET} 
 AWS_PUBLIC_SUBNET_ID_1: ""
 AWS_PUBLIC_SUBNET_ID_2: ""
-AWS_REGION: ${REGION}
-AWS_SSH_KEY_NAME: ${KEY_PAIR}
+AWS_REGION: eu-west-1
+AWS_SSH_KEY_NAME: ${KEY_PAIR} 
 AWS_VPC_CIDR: ""
-AWS_VPC_ID: ${VPC_ID}
+AWS_VPC_ID: ${VPC_ID} 
 BASTION_HOST_ENABLED: "false"
 CLUSTER_CIDR: 100.96.0.0/11
 CLUSTER_NAME: mgmt
@@ -141,10 +150,20 @@ tanzu management-cluster permissions aws set
 
 sleep 10
 
-#tanzu management-cluster create --file vpc-mgmt.yaml -v 6
+tanzu management-cluster create --file vpc-mgmt.yaml -v 6
 
 #sleep 30
 
 #tanzu management-cluster upgrade -y
 
 echo "mgmt cluster is up2date"
+
+cp tmc_cli /usr/local/bin/tmc
+chmod +x /usr/local/bin/tmc
+
+### create a cluster ###
+
+tanzu cluster create tap-cluster  --controlplane-machine-count 1 --worker-machine-count 3 --size t3.2xlarge -f vpc-mgmt.yaml 
+
+tanzu cluster kubeconfig get tap-cluster  --admin
+
