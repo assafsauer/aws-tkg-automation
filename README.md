@@ -1,6 +1,7 @@
-# PART 1: Automating TKG manager cluster on AWS with a click of a button
 
-## This repository contains automation code for TKG installtion on AWS and TAP (Tanzu application Platform) installation.
+# This repository contains automation code for TKG installtion on AWS and automated TAP (Tanzu application Platform) installation.
+
+## PART 1: Automating TKG on AWS 
 
 so what does it do ? 
 1) it create jump server with all the Tanzu depencies/packages on a dedicated VPC/Subnets...
