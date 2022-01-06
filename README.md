@@ -1,5 +1,9 @@
 
-# This repository contains automation code for TKG installtion on AWS and automated TAP (Tanzu application Platform) installation.
+# Tanzu TKG/TAP Automation 
+
+```diff
+This repository contains automation code for TKG installtion on AWS and automated TAP (Tanzu application Platform) installation.
+```
 
 ## PART 1: Automating TKG on AWS 
 
