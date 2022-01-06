@@ -1,16 +1,16 @@
 
 # Tanzu TKG/TAP Automation 
 
-```diff
+
 This repository contains automation code for TKG installtion on AWS and automated TAP (Tanzu application Platform) installation.
-```
+
 
 ## PART 1: Automating TKG on AWS 
 
 so what does it do ? 
-1) it create jump server with all the Tanzu depencies/packages on a dedicated VPC/Subnets...
-2) the script autoamte creation of mgmt cluster and guest cluster on the same VPC as the jump server.
-3) automate AP (Tanzu application Platform) installation
+1) it create jump server with all the Tanzu depencies/packages on a dedicated VPC/Subnets... (Terraform) 
+2) create mgmt cluster and guest cluster on the same VPC as the jump server.
+3) automation script for TAP (Tanzu application Platform) installation
 
 ```diff
 1) edit the main.tf (mandatory var is only the key)
