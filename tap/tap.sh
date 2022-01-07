@@ -1,7 +1,8 @@
 
 # /bin/bash
 
-### vars ###
+################## vars ##################
+##########################################
 
 mgmt_cluster=mgmt
 cluster=tap-cluster
@@ -23,7 +24,11 @@ domain=my_domain.com
 git_token=XXXXXX
 catalog_info=https://github.com/XXXXX/catalog-info.yaml
 
-### creating values template ###
+
+
+################## Templating tap values ##################
+###########################################################
+ 
 
 cat > tap-values.yml << EOF
 
@@ -79,6 +84,8 @@ metadata_store:
 EOF
 
 
+################## Download TAP packeges ##################
+###########################################################
 
 ### login to pivotal network ###
 
@@ -102,6 +109,9 @@ pivnet download-product-files --product-slug='tanzu-application-platform' --rele
 pivnet download-product-files --product-slug='tanzu-application-platform' --release-version='0.4.0' --product-file-id=1098740
 
 
+
+################## K8s Prep  ##################
+###############################################
 
 
 ##### confirm K8s cluster requirements before execution ####
@@ -147,8 +157,9 @@ kubectl apply -f storage-class.yml
 
 
 
+################## update tap plugins ##################
+###########################################################
 
-#### install plugins ###
 
 mkdir tanzu
 tar -xvf tanzu-framework-linux-amd64.tar -C tanzu/
@@ -181,12 +192,15 @@ kubectl apply -f https://github.com/vmware-tanzu/carvel-secretgen-controller/rel
 
 
 
-
 #### RBAC ####
 
 curl -LJO https://raw.githubusercontent.com/assafsauer/aws-tkg-automation/master/tap/tap-role.yml
 kubectl apply -f tap-role.yml -n $tap_namespace
 
+
+
+################## Secrets ##################
+#############################################
 
 #### validating access /exist script if login fail #####
 
@@ -242,7 +256,9 @@ tanzu package repository add tanzu-tap-repository \
 
 
 
-#### install tap ####
+##################  TAP installation ##################
+#######################################################
+
 
 echo "starting installtion in 10 sec (Please be patient as it might take few min to complete)"
 sleep 10
@@ -261,7 +277,7 @@ fi
 
 
 
-#### test ####
+#### Test ####
 
 echo "run test (Please be patient as it might take few min to complete) "
 
