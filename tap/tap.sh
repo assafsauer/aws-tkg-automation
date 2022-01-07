@@ -58,7 +58,7 @@ image_policy_webhook:
    allow_unmatched_images: true
 
 learningcenter:
-  ingressDomain: tap-learn.$domain
+  ingressDomain: learn.apps.$domain
   storageClass: "default"
 
 tap_gui:
