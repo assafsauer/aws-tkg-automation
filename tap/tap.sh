@@ -335,7 +335,16 @@ ootb_supply_chain_basic:
   registry:
     server: $HARBOR_DOMAIN
     repository: "tap/supply-chain"
-
+    
+ootb_supply_chain_testing:
+ registry:
+  server: "source-lab.io"
+  repository: "tap/supply-chain"
+  
+ootb_supply_chain_testing_scanning:
+ registry:
+  server: "source-lab.io"
+  repository: "tap/supply-chain"
 
 contour:
   infrastructure_provider: aws
