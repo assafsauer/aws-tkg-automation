@@ -346,6 +346,9 @@ ootb_supply_chain_testing_scanning:
   server: "source-lab.io"
   repository: "tap/supply-chain"
 
+grype:
+  targetImagePullSecret: "supply-chain"
+
 contour:
   infrastructure_provider: aws
   envoy:
