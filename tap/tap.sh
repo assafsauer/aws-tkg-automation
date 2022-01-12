@@ -5,6 +5,25 @@
 ################## vars ##################
 ##########################################
 
+mgmt_cluster=mgmt
+cluster=tap-cluster
+tap_namespace=default
+
+
+export HARBOR_USER=tanzu
+export HARBOR_PWD=XXX
+export HARBOR_DOMAIN=XXX
+
+export INSTALL_REGISTRY_HOSTNAME=registry.tanzu.vmware.com
+export INSTALL_REGISTRY_USERNAME=XXX
+export INSTALL_REGISTRY_PASSWORD=xxx
+
+token=XXX
+domain=domain.com
+
+### optional: TAP GUI ####
+git_token=xxxx
+catalog_info=https://github.com/assafsauer/tap-catalog/blob/main/catalog-info.yaml
 
 
 
