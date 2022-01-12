@@ -257,7 +257,7 @@ kubectl get secret registry-credentials --output="jsonpath={.data.\.dockerconfig
 
 
 tanzu package repository add tanzu-tap-repository \
-  --url registry.tanzu.vmware.com/tanzu-application-platform/tap-packages:1.0.0 \
+  --url registry.tanzu.vmware.com/tanzu-application-platform/tap-packages:$tap_version \
   --namespace tap-install
 
 
@@ -269,7 +269,6 @@ tanzu package repository add tanzu-tap-repository \
 echo "starting installtion in 10 sec (Please be patient as it might take few min to complete)"
 sleep 10
 
-#tanzu package installed update --install tap -p tap.tanzu.vmware.com -v 0.4.0 -n tap-install --poll-timeout 30m -f tap-values.yml
 tanzu package install tap -p tap.tanzu.vmware.com -v $tap_version --values-file tap-values.yml -n tap-install 
 
 
