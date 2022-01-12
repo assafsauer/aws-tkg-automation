@@ -16,7 +16,7 @@ so what does it do ?
 3) automation script for TAP (Tanzu application Platform) installation
 
 ```diff
-1) edit the main.tf (mandatory var is only the key)
+1) edit the main.tf (mandatory var is only the keyname)
 
 variable "awsprops" {
     default = {
@@ -36,7 +36,29 @@ export AWS_SECRET_ACCESS_KEY=7lqB4jx47kEXkxxxxx
 export AWS_SESSION_TOKEN=IQoJb3JpZ2luX2VjELbxxxLxxxxxxx
 export AWS_REGION=eu-west-1
 
-3) export your AWS access and run terraform 
+If you change the region then also change the AWS_AMI to map to an ubuntu image available in the region.
+
+3) Edit the host.tf (Put in AMI if changed region from eu-west-1 and path to private key used for VM access)
+
+resource "aws_instance" "tkg" {
+  ami           = "**ami-0015a39e4b7c0966f**"
+  instance_type = lookup(var.awsprops, "itype")
+  associate_public_ip_address = true
+  subnet_id = aws_subnet.public.id
+  vpc_security_group_ids = ["${aws_security_group.mywebsecurity.id}"]
+  key_name = lookup(var.awsprops, "keyname")
+  availability_zone = lookup(var.awsprops, "availability_zone")
+
+
+  connection {
+      host        = aws_instance.tkg.public_ip
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = "**${file("/path/to/your/private-key-pair.pem")}**"
+
+...
+
+4) export your AWS access and run terraform 
 
 run: 
 terraform init 
@@ -48,7 +70,7 @@ terraform apply
 
 ```diff
 1) ssh to the jump box and run: "wget https://raw.githubusercontent.com/assafsauer/aws-tkg-automation/master/tap/tap.sh"
-2) edit the vars , chmod and execute the script (./tap.sh)
+2) edit the vars , chmod and execute the script as root user (./tap.sh)
 
 # /bin/bash
 
