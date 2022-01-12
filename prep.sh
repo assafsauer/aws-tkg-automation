@@ -30,7 +30,7 @@ NODE_AZ=${REGION}a
 
 ########  tkg mgmt configuration ########
 cat > vpc-mgmt.yaml << EOF
-AWS_AMI_ID: ami-0f210a57e0be8c9ef
+AWS_AMI_ID: ${AWS_AMI}
 AWS_NODE_AZ: ${NODE_AZ}
 AWS_NODE_AZ_1: ""
 AWS_NODE_AZ_2: ""
