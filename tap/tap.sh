@@ -5,25 +5,7 @@
 ################## vars ##################
 ##########################################
 
-mgmt_cluster=mgmt
-cluster=tap-cluster
-tap_namespace=default
 
-
-export HARBOR_USER=tanzu
-export HARBOR_PWD=Tanzu@vmware1
-export HARBOR_DOMAIN=source-lab.io
-
-export INSTALL_REGISTRY_HOSTNAME=registry.tanzu.vmware.com
-export INSTALL_REGISTRY_USERNAME=sauera@vmware.com
-export INSTALL_REGISTRY_PASSWORD=SAuer1357@A1
-
-token=fc175282ad2e4d6aaf24d61bd089e64e-r
-domain=source-lab.io
-
-### optional: TAP GUI ####
-git_token=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
-catalog_info=https://github.com/assafsauer/tap-catalog/blob/main/catalog-info.yaml
 
 
 
