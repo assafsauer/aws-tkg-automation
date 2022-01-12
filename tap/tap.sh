@@ -23,7 +23,7 @@ domain=domain.com
 
 ###  TAP Version ####
 tap_version=1.0.0
-framework-linux-amd64=1114447
+framework_linux_md64=1114447
 gui_blank_Catalog=1099786
 gui_Yelb_Catalog=1073911
 
@@ -108,7 +108,7 @@ pivnet login --api-token=$token
 
 
 ### download tanzu-CLI -tanzu-framework-linux-amd64.tar
-pivnet download-product-files --product-slug='tanzu-application-platform' --release-version=$tap_version --product-file-id=$framework-linux-amd64
+pivnet download-product-files --product-slug='tanzu-application-platform' --release-version=$tap_version --product-file-id=$framework_linux_md64
 
 ### GUI catalog:  tap-gui-yelb-catalog.tgz , tap-gui-blank-catalog.tgz
 
