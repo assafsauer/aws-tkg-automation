@@ -1,6 +1,7 @@
 
 # /bin/bash
 
+
 ################## vars ##################
 ##########################################
 
@@ -9,20 +10,20 @@ cluster=tap-cluster
 tap_namespace=default
 
 
-export HARBOR_USER=XXX
-export HARBOR_PWD=XXX
-export HARBOR_DOMAIN=harbor_my_domain.com
+export HARBOR_USER=tanzu
+export HARBOR_PWD=Tanzu@vmware1
+export HARBOR_DOMAIN=source-lab.io
 
 export INSTALL_REGISTRY_HOSTNAME=registry.tanzu.vmware.com
-export INSTALL_REGISTRY_USERNAME=XXX
-export INSTALL_REGISTRY_PASSWORD=XXXX
+export INSTALL_REGISTRY_USERNAME=sauera@vmware.com
+export INSTALL_REGISTRY_PASSWORD=SAuer1357@A1
 
-token=XXXX
-domain=my_domain.com
+token=fc175282ad2e4d6aaf24d61bd089e64e-r
+domain=source-lab.io
 
 ### optional: TAP GUI ####
-git_token=XXXXXX
-catalog_info=https://github.com/XXXXX/catalog-info.yaml
+git_token=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
+catalog_info=https://github.com/assafsauer/tap-catalog/blob/main/catalog-info.yaml
 
 
 
@@ -98,15 +99,14 @@ pivnet login --api-token=$token
 
 
 ### download tanzu-CLI -tanzu-framework-linux-amd64.tar
-pivnet download-product-files --product-slug='tanzu-application-platform' --release-version='0.4.0' --product-file-id=1100110
+#pivnet download-product-files --product-slug='tanzu-application-platform' --release-version='0.4.0' --product-file-id=1100110
+pivnet download-product-files --product-slug='tanzu-application-platform' --release-version='1.0.0' --product-file-id=1114447
 ### insight insight-1.0.0-beta.2_linux_amd64
-pivnet download-product-files --product-slug='tanzu-application-platform' --release-version='0.4.0' --product-file-id=1101070
+#pivnet download-product-files --product-slug='tanzu-application-platform' --release-version='0.4.0' --product-file-id=1101070
 
 ### GUI catalog:  tap-gui-yelb-catalog.tgz , tap-gui-blank-catalog.tgz
-pivnet download-product-files --product-slug='tanzu-application-platform' --release-version='0.4.0' --product-file-id=1073911
-pivnet download-product-files --product-slug='tanzu-application-platform' --release-version='0.4.0' --product-file-id=1099786
-
-pivnet download-product-files --product-slug='tanzu-application-platform' --release-version='0.4.0' --product-file-id=1098740
+pivnet download-product-files --product-slug='tanzu-application-platform' --release-version='1.0.0' --product-file-id=1099786
+pivnet download-product-files --product-slug='tanzu-application-platform' --release-version='1.0.0' --product-file-id=1073911
 
 
 
@@ -248,11 +248,10 @@ kubectl create secret docker-registry registry-credentials --docker-server=${HAR
 echo "your harbor cred"
 kubectl get secret registry-credentials --output="jsonpath={.data.\.dockerconfigjson}" | base64 --decode
 
+
 tanzu package repository add tanzu-tap-repository \
-  --url registry.tanzu.vmware.com/tanzu-application-platform/tap-packages:0.4.0 \
+  --url registry.tanzu.vmware.com/tanzu-application-platform/tap-packages:1.0.0 \
   --namespace tap-install
-
-
 
 
 
@@ -263,7 +262,9 @@ tanzu package repository add tanzu-tap-repository \
 echo "starting installtion in 10 sec (Please be patient as it might take few min to complete)"
 sleep 10
 
-tanzu package installed update --install tap -p tap.tanzu.vmware.com -v 0.4.0 -n tap-install --poll-timeout 30m -f tap-values.yml
+#tanzu package installed update --install tap -p tap.tanzu.vmware.com -v 0.4.0 -n tap-install --poll-timeout 30m -f tap-values.yml
+tanzu package install tap -p tap.tanzu.vmware.com -v 1.0.0 --values-file tap-values.yml -n tap-install 
+
 
 echo "Cross your fingers and pray , or call Timo"
 
@@ -409,7 +410,7 @@ metadata_store:
 EOF
 
 
-tanzu package installed update --install tap -p tap.tanzu.vmware.com -v 0.4.0 -n tap-install --poll-timeout 30m -f tap-gui-values.yml
+tanzu package installed update --install tap -p tap.tanzu.vmware.com -v 0.1.0 -n tap-install --poll-timeout 30m -f tap-gui-values.yml
 
 sleep 30
 
