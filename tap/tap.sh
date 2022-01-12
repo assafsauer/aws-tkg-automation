@@ -18,7 +18,7 @@ export INSTALL_REGISTRY_HOSTNAME=registry.tanzu.vmware.com
 export INSTALL_REGISTRY_USERNAME=XXX
 export INSTALL_REGISTRY_PASSWORD=xxx
 
-token=XXX
+token=XXX  ## pivotal network token
 domain=domain.com
 
 ###  TAP Version ####
