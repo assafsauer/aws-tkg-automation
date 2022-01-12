@@ -411,7 +411,7 @@ metadata_store:
 EOF
 
 
-tanzu package installed update --install tap -p tap.tanzu.vmware.com -v 0.1.0 -n tap-install --poll-timeout 30m -f tap-gui-values.yml
+tanzu package installed update --install tap -p tap.tanzu.vmware.com -v 1.0.0 -n tap-install --poll-timeout 30m -f tap-gui-values.yml
 
 sleep 30
 
