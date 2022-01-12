@@ -112,8 +112,8 @@ pivnet download-product-files --product-slug='tanzu-application-platform' --rele
 
 ### GUI catalog:  tap-gui-yelb-catalog.tgz , tap-gui-blank-catalog.tgz
 
-pivnet download-product-files --product-slug='tanzu-application-platform' --release-version='1.0.0' --product-file-id=$gui_blank_Catalog
-pivnet download-product-files --product-slug='tanzu-application-platform' --release-version='1.0.0' --product-file-id=$gui_Yelb_Catalog
+pivnet download-product-files --product-slug='tanzu-application-platform' --release-version=$tap_version --product-file-id=$gui_blank_Catalog
+pivnet download-product-files --product-slug='tanzu-application-platform' --release-version=$tap_version --product-file-id=$gui_Yelb_Catalog
 
 
 
@@ -270,7 +270,7 @@ echo "starting installtion in 10 sec (Please be patient as it might take few min
 sleep 10
 
 #tanzu package installed update --install tap -p tap.tanzu.vmware.com -v 0.4.0 -n tap-install --poll-timeout 30m -f tap-values.yml
-tanzu package install tap -p tap.tanzu.vmware.com -v 1.0.0 --values-file tap-values.yml -n tap-install 
+tanzu package install tap -p tap.tanzu.vmware.com -v $tap_version --values-file tap-values.yml -n tap-install 
 
 
 echo "Cross your fingers and pray , or call Timo"
