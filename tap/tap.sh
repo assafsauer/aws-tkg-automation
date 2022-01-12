@@ -21,6 +21,14 @@ export INSTALL_REGISTRY_PASSWORD=xxx
 token=XXX
 domain=domain.com
 
+###  TAP Version ####
+tap_version=1.0.0
+framework-linux-amd64=1114447
+gui_blank_Catalog=1099786
+gui_Yelb_Catalog=1073911
+
+
+
 ### optional: TAP GUI ####
 git_token=xxxx
 catalog_info=https://github.com/assafsauer/tap-catalog/blob/main/catalog-info.yaml
@@ -100,14 +108,12 @@ pivnet login --api-token=$token
 
 
 ### download tanzu-CLI -tanzu-framework-linux-amd64.tar
-#pivnet download-product-files --product-slug='tanzu-application-platform' --release-version='0.4.0' --product-file-id=1100110
-pivnet download-product-files --product-slug='tanzu-application-platform' --release-version='1.0.0' --product-file-id=1114447
-### insight insight-1.0.0-beta.2_linux_amd64
-#pivnet download-product-files --product-slug='tanzu-application-platform' --release-version='0.4.0' --product-file-id=1101070
+pivnet download-product-files --product-slug='tanzu-application-platform' --release-version=$tap_version --product-file-id=$framework-linux-amd64
 
 ### GUI catalog:  tap-gui-yelb-catalog.tgz , tap-gui-blank-catalog.tgz
-pivnet download-product-files --product-slug='tanzu-application-platform' --release-version='1.0.0' --product-file-id=1099786
-pivnet download-product-files --product-slug='tanzu-application-platform' --release-version='1.0.0' --product-file-id=1073911
+
+pivnet download-product-files --product-slug='tanzu-application-platform' --release-version='1.0.0' --product-file-id=$gui_blank_Catalog
+pivnet download-product-files --product-slug='tanzu-application-platform' --release-version='1.0.0' --product-file-id=$gui_Yelb_Catalog
 
 
 
@@ -411,7 +417,7 @@ metadata_store:
 EOF
 
 
-tanzu package installed update --install tap -p tap.tanzu.vmware.com -v 1.0.0 -n tap-install --poll-timeout 30m -f tap-gui-values.yml
+tanzu package installed update --install tap -p tap.tanzu.vmware.com -v $tap_version -n tap-install --poll-timeout 30m -f tap-gui-values.yml
 
 sleep 30
 
