@@ -31,7 +31,7 @@ NODE_AZ=${REGION}a
 ########  tkg mgmt configuration ########
 cat > vpc-mgmt.yaml << EOF
 AWS_AMI_ID: ami-0f210a57e0be8c9ef
-AWS_NODE_AZ: eu-west-1a
+AWS_NODE_AZ: ${NODE_AZ}
 AWS_NODE_AZ_1: ""
 AWS_NODE_AZ_2: ""
 AWS_PRIVATE_NODE_CIDR: ""
@@ -46,7 +46,7 @@ AWS_PUBLIC_NODE_CIDR_2: ""
 AWS_PUBLIC_SUBNET_ID: ${PUBLIC_SUBNET} 
 AWS_PUBLIC_SUBNET_ID_1: ""
 AWS_PUBLIC_SUBNET_ID_2: ""
-AWS_REGION: eu-west-1
+AWS_REGION: ${REGION}
 AWS_SSH_KEY_NAME: ${KEY_PAIR} 
 AWS_VPC_CIDR: ""
 AWS_VPC_ID: ${VPC_ID} 
