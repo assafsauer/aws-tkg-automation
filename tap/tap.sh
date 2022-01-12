@@ -37,7 +37,7 @@ cat > tap-values.yml << EOF
 profile: full
 
 buildservice:
-  kp_default_repository: $domain/tap/build-service
+  kp_default_repository: $HARBOR_DOMAIN/tap/build-service
   kp_default_repository_username: $HARBOR_USER
   kp_default_repository_password: $HARBOR_PWD
   tanzunet_username: $INSTALL_REGISTRY_USERNAME
