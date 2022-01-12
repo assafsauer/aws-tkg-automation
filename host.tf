@@ -50,27 +50,26 @@ tags = {
 
 }
 
-#resource "aws_network_interface" "CDE-MGMT" {
-#private_ips = ["172.16.1.50"]
-#security_groups = [aws_security_group.mywebsecurity.id]
-#private_ips_count = "1" 
-#subnet_id   = aws_subnet.public.id 
-#  attachment {
-#    instance     = aws_instance.tkg.id 
-#    device_index = 1 
-#  }
-#tags = {
-#    Name = "int2-private"
-#  }
-#}
+resource "aws_network_interface" "CDE-MGMT" {
+private_ips = ["172.16.1.50"]
+security_groups = [aws_security_group.mywebsecurity.id]
+private_ips_count = "1" 
+subnet_id   = aws_subnet.public.id 
+  attachment {
+    instance     = aws_instance.tkg.id 
+    device_index = 1 
+  }
+tags = {
+    Name = "int2-private"
+  }
+}
 
-#resource "aws_eip" "one" {
-# vpc                       = true
-#  network_interface         = aws_network_interface.CDE-MGMT.id
-#  associate_with_private_ip = "172.16.1.50"
-#}
-#
-#output "ec2instance" {
-#  value = aws_instance.tkg.public_ip
-#}
-#
+resource "aws_eip" "one" {
+  vpc                       = true
+  network_interface         = aws_network_interface.CDE-MGMT.id
+  associate_with_private_ip = "172.16.1.50"
+}
+
+output "ec2instance" {
+  value = aws_instance.tkg.public_ip
+}
