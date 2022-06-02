@@ -1,5 +1,3 @@
-root@ip-172-16-1-53:/home/ubuntu# cat tap.sh 
-
 # /bin/bash
 
 
