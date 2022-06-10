@@ -1,12 +1,12 @@
 
-1) TAP required access to Tanzu Registry, your registry, and a Pivotal token to download the packages automaticly with pivnet CLI:
+1) the script required access to Tanzu Registry, your registry, and a Pivotal token to download the packages automaticly with pivnet CLI:
 
 <img width="786" alt="image" src="https://user-images.githubusercontent.com/22165556/173012432-3dab1ead-8245-4a88-bf75-b3ab262f2b7d.png">
 
 ```
-mgmt_cluster=mgmt
-cluster=tap-cluster-3
-tap_namespace=default
+mgmt_cluster=mgmt #mgmt cluster
+cluster=tap-cluster-3  #target cluster
+tap_namespace=default 
 
 
 export HARBOR_USER=tanzu
@@ -17,8 +17,8 @@ export INSTALL_REGISTRY_HOSTNAME=registry.tanzu.vmware.com
 export INSTALL_REGISTRY_USERNAME=XXXX
 export INSTALL_REGISTRY_PASSWORD=XXX
 
-token=XXX
-domain=source-lab.io
+token=XXX  # Pivotal Token
+domain=source-lab.io #ingress domain
 ```
 
 
