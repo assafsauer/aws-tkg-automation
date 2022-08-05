@@ -1,0 +1,48 @@
+profile: full
+
+shared:
+  ingress_domain: $domain
+
+ceip_policy_disclosed: true
+buildservice:
+  kp_default_repository: $HARBOR_DOMAIN
+  kp_default_repository_username: $HARBOR_USER
+  kp_default_repository_password: $HARBOR_PWD
+
+supply_chain: basic
+
+ootb_supply_chain_basic:
+  registry:
+    server: $HARBOR_DOMAIN
+    repository: "tap/supply-chain"
+  gitops:
+  - host: github.com
+    token: $git_token
+
+tap_gui:
+  service_type: ClusterIP
+  app_config:
+    app:
+      baseUrl: http://tap-gui.INGRESS-DOMAIN
+    catalog:
+      locations:
+        - type: url
+          target: https://GIT-CATALOG-URL/catalog-info.yaml
+    backend:
+      baseUrl: http://$tap_domain:7000
+      cors:
+        origin: http://$tap_domain:7000
+
+metadata_store:
+  ns_for_export_app_cert: $tap_namespace
+  app_service_type: ClusterIP
+
+scanning:
+  metadataStore:
+    url: "" # Disable embedded integration since it's deprecated
+
+grype:
+  namespace: $tap_namespace
+  targetImagePullSecret: "tap-registry"
+  metadataStore:
+    url: "https://metadata-store-app.metadata-store.svc.cluster.local:8443"
