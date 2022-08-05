@@ -5,35 +5,35 @@
 ##########################################
 
 mgmt_cluster=mgmt
-cluster=tap-cluster-3
-tap_namespace=default
+cluster=tap-c3
+tap_namespace=dev
 
 
-export HARBOR_USER=tanzu
-export HARBOR_PWD=XXX
-export HARBOR_DOMAIN=harbor.source-lab.io
+export HARBOR_USER=harbor.user
+export HARBOR_PWD=harbor.pass
+export HARBOR_DOMAIN=my.harbor.domain
 
 export INSTALL_REGISTRY_HOSTNAME=registry.tanzu.vmware.com
-export INSTALL_REGISTRY_USERNAME=XXX
-export INSTALL_REGISTRY_PASSWORD=XXX
+export INSTALL_REGISTRY_USERNAME=email
+export INSTALL_REGISTRY_PASSWORD=pass
 
+token=pivotal.token
+domain=mydomain
 
-token=xxx ##Pivotal token
-domain=source-lab.io
 
 ###  TAP Version ####
-VERSION=v0.11.2
-tap_version=1.1.0
-framework_linux_md64=1190781
+VERSION=v0.11.4 #folder core version
+tap_version=1.1.1
+framework_linux_md64=1212839
 gui_blank_Catalog=1099786
 gui_Yelb_Catalog=1073911
 
 
-
 ### optional: TAP GUI ####
-git_token=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
+git_token=github.token
 catalog_info=https://github.com/assafsauer/tap-catalog/blob/main/catalog-info.yaml
 
+sshkey="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDVJ7hgQvPZAjwIMQKd7d8kmqHftzGUqycuLkGzAzrLtgjE5b5JjcDHjrwad90wsFJsHU9MUYK9eQsA/coWVg7BLjtexIDcXJ9K7tentliwf24UG1TDGPDx/Y5E1wcGVjXPkKtWvRtreiGsew96FetdkkBiS98TyQqfpn8J86h+Ut7hFoTotoIZ389C/77gMwZLa52/Cu3AfAdvOWkexGXvFLvfgOfRRpA7Ja4gYtPs2CWl3aWiet4m0Ox2MROIljHCWPaIF/UKDfEwGtlc0hu7QiPMs7QIQnc/PrR/X8tfye6Sphh5gmVvhvppwLeCzziumj5NNzm6biWc/qkrWwOyACtiaZ5ZMPwMdJFAN0SdcifYuAoSW6EFcfu06toejzARQHTKVv5mWUWD8OYo1bSucYzL24Pjq/n1kqTyfRO52PvDk2Yx9bBN/XuemceywFV2Qx56dCBi7D1KGPUrX7Jv/EpyPcdUHr4HxToQpQrslGNQIjSEzhYyOJPojQY2bStBIR9JoT52mk5l3lHLf3NVXa9iRYbMBbOvueB2B4vNbHsZsyl2CxseWrJDzGCcLmN18lean8vH6gIeeEBSJj8YWBG/0A3C1mQf/YBJRY9W1IITPUyLhDuastLjKbxaH//4pnTbkXGTmdMGg0zw+RZI/t+OlBFdAvOJ7NuBqFDa7w== sauera@vmware.com"
 
 
 
@@ -126,7 +126,7 @@ echo "starting installation"
 
 kubectl config use-context $mgmt_cluster"-admin@"$mgmt_cluster
 
-kubectl patch "app/"$cluster"-kapp-controller" -n default -p '{"spec":{"paused":true}}' --type=merge
+kubectl patch "app/"$cluster"-kapp-controller" -n kapp-controller -p '{"spec":{"paused":true}}' --type=merge
 
 kubectl config use-context $cluster"-admin@"$cluster
 
@@ -239,7 +239,7 @@ tanzu secret registry add harbor-registry -y \
 
 
 ### temp workaround for the "ServiceAccountSecretError" issue
-kubectl create secret docker-registry registry-credentials --docker-server=${HARBOR_DOMAIN} --docker-username=${HARBOR_USER} --docker-password=${HARBOR_PWD} -n default
+kubectl create secret docker-registry registry-credentials --docker-server=${HARBOR_DOMAIN} --docker-username=${HARBOR_USER} --docker-password=${HARBOR_PWD} -n tap-install 
 
 echo "your harbor cred"
 kubectl get secret registry-credentials --output="jsonpath={.data.\.dockerconfigjson}" | base64 --decode
@@ -261,47 +261,8 @@ sleep 10
 tanzu package install tap -p tap.tanzu.vmware.com -v $tap_version --values-file tap-values.yml -n tap-install
 
 
-echo "Cross your fingers and pray , or call Timo"
+echo "might take few min to complete"
 
-
-read -p "ready to test? (enter: yes to continue)"
-if [ "$REPLY" != "yes" ]; then
-   exit
-fi
-
-
-
-
-
-#### Test ####
-
-echo "run test (Please be patient as it might take few min to complete) "
-
-git clone https://github.com/assafsauer/spring-petclinic-accelerators.git
-
-tanzu apps workload create petclinic --local-path spring-petclinic-accelerators  --type web --label app.kubernetes.io/part-of=spring-petclinic-accelerators --source-image harbor.source-lab.io/tap/app --yes
-
-
-tanzu apps workload tail petclinic  & sleep 400 ; kill $!
-
-
-url=$(tanzu apps workload get petclinic |grep http| awk 'NR=='1'{print $3}')
-ingress=$( kubectl get svc -A |grep tanzu-system-ingress |grep LoadBalancer | awk 'NR=='1'{print $5}')
-ip=$(nslookup $ingress |grep Address |grep -v 127 | awk '{print $2}')
-
-echo "please update your DNS as follow:"
-echo *app.$domain "pointing to" $ip
-
-
-read -p "ready to test again? (enter: yes to continue)"
-if [ "$REPLY" != "yes" ]; then
-   exit
-fi
-
-curl -k $url
-
-echo "done"
-#tanzu apps workload list
 
 
 #### install TAP GUI ####
@@ -317,7 +278,7 @@ tap_domain=$(kubectl get svc -n tap-gui |awk 'NR=='2'{print $4}')
 cat > tap-gui-values.yml << EOF
 profile: full
 buildservice:
-  kp_default_repository: $domain/tap/build-service
+  kp_default_repository: $HARBOR_DOMAIN/tap/build-service
   kp_default_repository_username: $HARBOR_USER
   kp_default_repository_password: $HARBOR_PWD
   tanzunet_username: $INSTALL_REGISTRY_USERNAME
@@ -327,18 +288,18 @@ ootb_supply_chain_basic:
   registry:
     server: $HARBOR_DOMAIN
     repository: "tap/supply-chain"
-
 ootb_supply_chain_testing:
  registry:
   server: $HARBOR_DOMAIN 
   repository: "tap/supply-chain"
-
+ gitops:
+  ssh_secret: $sshkey 
 ootb_supply_chain_testing_scanning:
  registry:
   server: $HARBOR_DOMAIN 
   repository: "tap/supply-chain"
 grype:
-  targetImagePullSecret: "supply-chain"
+  targetImagePullSecret: "tap-registry"
 contour:
   infrastructure_provider: aws
   envoy:
@@ -392,3 +353,45 @@ tanzu package installed update --install tap -p tap.tanzu.vmware.com -v $tap_ver
 sleep 30
 
 echo "done,  It might take few minutes to complete "
+
+
+
+
+read -p "ready to test? (enter: yes to continue)"
+if [ "$REPLY" != "yes" ]; then
+   exit
+fi
+
+
+
+
+
+#### Test ####
+
+echo "run test (Please be patient as it might take few min to complete) "
+
+git clone https://github.com/assafsauer/spring-petclinic-accelerators.git
+
+tanzu apps workload create petclinic --local-path spring-petclinic-accelerators  --type web --label app.kubernetes.io/part-of=spring-petclinic-accelerators --source-image harbor.source-lab.io/tap/app --yes
+
+
+tanzu apps workload tail petclinic  & sleep 400 ; kill $!
+
+
+url=$(tanzu apps workload get petclinic |grep http| awk 'NR=='1'{print $3}')
+ingress=$( kubectl get svc -A |grep tanzu-system-ingress |grep LoadBalancer | awk 'NR=='1'{print $5}')
+ip=$(nslookup $ingress |grep Address |grep -v 127 | awk '{print $2}')
+
+echo "########## please update your DNS as follow: ###########"
+echo *app.$domain "pointing to" $ip
+
+
+read -p "ready to test again? (enter: yes to continue)"
+if [ "$REPLY" != "yes" ]; then
+   exit
+fi
+
+curl -k $url
+
+echo "done"
+#tanzu apps workload list
