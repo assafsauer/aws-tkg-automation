@@ -90,7 +90,7 @@ kubectl create clusterrolebinding default-tkg-admin-privileged-binding --cluster
 
 ### create storageclass ###
 
-kubectl apply -f storage-class.yml
+kubectl apply -f https://github.com/assafsauer/aws-tkg-automation/blob/master/tap/template/storage-class.yml
 
 
 
@@ -192,7 +192,7 @@ tanzu package repository add tanzu-tap-repository \
 echo "starting installtion in 10 sec (Please be patient as it might take few min to complete)"
 sleep 10
 
-tanzu package install tap -p tap.tanzu.vmware.com -v $tap_version --values-file tap-values.yml -n tap-install
+tanzu package install tap -p tap.tanzu.vmware.com -v $tap_version --values-file https://github.com/assafsauer/aws-tkg-automation/blob/master/tap/template/tap-values.yaml -n tap-install
 
 
 echo "might take few min to complete"
