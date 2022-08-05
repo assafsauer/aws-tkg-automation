@@ -71,27 +71,5 @@ terraform apply
 ```diff
 1) ssh to the jump box and run: "wget https://raw.githubusercontent.com/assafsauer/aws-tkg-automation/master/tap/tap.sh"
 2) edit the vars , chmod and execute the script as root user (./tap.sh)
-
-# /bin/bash
-
-### vars ###
-
-mgmt_cluster=mgmt
-cluster=tap-cluster
-tap_namespace=default
-
-
-export HARBOR_USER=XXX
-export HARBOR_PWD=XXX
-export HARBOR_DOMAIN=harbor_my_domain.com
-
-export INSTALL_REGISTRY_HOSTNAME=registry.tanzu.vmware.com
-export INSTALL_REGISTRY_USERNAME=XXX
-export INSTALL_REGISTRY_PASSWORD=XXXX
-
-token=XXXX
-domain=my_domain.com
-
-### optional: TAP GUI ####
-git_token=XXXXXX
-catalog_info=https://github.com/XXXXX/catalog-info.yaml
+for example , tap installtion script for ver 1.1:
+ https://github.com/assafsauer/aws-tkg-automation/blob/master/tap/tap1.1.0.sh
