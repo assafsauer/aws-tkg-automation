@@ -1,1 +1,51 @@
+shared:
+  ingress_domain: source-lab.io
+appliveview:
+  ingressEnabled: "true"
+appliveview_connector:
+  backend:
+    sslDisabled: "true"
 
+ceip_policy_disclosed: true
+buildservice:
+  kp_default_repository: harbor.source-lab.io/tbs
+  kp_default_repository_username: tanzu
+  kp_default_repository_password: Tanzu@vmware1
+
+supply_chain: basic
+
+ootb_supply_chain_basic:
+  registry:
+    server: harbor.source-lab.io
+    repository: "tap"
+  gitops:
+    # Leave empty for public repos, add a secret for private repos.
+    ssh_secret: ""
+
+tap_gui:
+  service_type: ClusterIP
+  app_config:
+    app:
+      baseUrl: http://tap-gui.$ingress
+    catalog:
+      locations:
+        - type: url
+          target: $catalog_info 
+    backend:
+      baseUrl: http://$ingress:7000
+      cors:
+        origin: http://$ingress:7000
+        
+
+metadata_store:
+  ns_for_export_app_cert: dev
+  app_service_type: ClusterIP
+
+scanning:
+  metadataStore:
+    url: "" # Disable embedded integration since it's deprecated
+
+
+grype:
+  namespace: "dev"
+  targetImagePullSecret: "registry-credentials"
