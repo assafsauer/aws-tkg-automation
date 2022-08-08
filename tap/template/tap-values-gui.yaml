@@ -1,56 +1,57 @@
+profile: full
+
 shared:
-  ingress_domain: source-lab.io
+  ingress_domain: $domain
 appliveview:
   ingressEnabled: "true"
 appliveview_connector:
   backend:
     sslDisabled: "true"
-
+    
 ceip_policy_disclosed: true
 buildservice:
-  kp_default_repository: harbor.source-lab.io/tbs
-  kp_default_repository_username: tanzu
-  kp_default_repository_password: Tanzu@vmware1
+  kp_default_repository: $HARBOR_DOMAIN/tap
+  kp_default_repository_username: $HARBOR_USER
+  kp_default_repository_password: $HARBOR_PWD
 
 supply_chain: basic
 
 ootb_supply_chain_basic:
   registry:
-    server: harbor.source-lab.io
-    repository: "tap"
+    server: $HARBOR_DOMAIN
+    repository: "tap/supply-chain"
   gitops:
-    # Leave empty for public repos, add a secret for private repos.
-    ssh_secret: ""
+  - host: github.com
+    token: $git_token
 
 tap_gui:
-  service_type: ClusterIP
+  service_type: LoadBalancer
   app_config:
     app:
-      baseUrl: http://tap-gui.$ingress
+      baseUrl: http://tap-gui.$tap_domain
     catalog:
       locations:
         - type: url
           target: $catalog_info 
     backend:
-      baseUrl: http://$ingress:7000
+      baseUrl: http://$tap_domain:7000
       cors:
-        origin: http://$ingress:7000
+        origin: http://$tap_domain:7000
         
 contour:
   infrastructure_provider: aws
   envoy:
     service:
       aws:
-        LBType: nlb
-        
+        LBType: nlb     
+
 metadata_store:
-  ns_for_export_app_cert: dev
-  app_service_type: ClusterIP
+  ns_for_export_app_cert: $tap_namespace
+  app_service_type: LoadBalancer
 
 scanning:
   metadataStore:
     url: "" # Disable embedded integration since it's deprecated
-
 
 grype:
   namespace: "dev"
