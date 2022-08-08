@@ -36,7 +36,13 @@ tap_gui:
       cors:
         origin: http://$ingress:7000
         
-
+contour:
+  infrastructure_provider: aws
+  envoy:
+    service:
+      aws:
+        LBType: nlb
+        
 metadata_store:
   ns_for_export_app_cert: dev
   app_service_type: ClusterIP
