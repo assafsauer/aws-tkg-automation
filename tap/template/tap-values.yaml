@@ -10,7 +10,7 @@ appliveview_connector:
     
 ceip_policy_disclosed: true
 buildservice:
-  kp_default_repository: $HARBOR_DOMAIN/tbs
+  kp_default_repository: $HARBOR_DOMAIN/tap
   kp_default_repository_username: $HARBOR_USER
   kp_default_repository_password: $HARBOR_PWD
 
