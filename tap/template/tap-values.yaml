@@ -25,18 +25,7 @@ ootb_supply_chain_basic:
     token: $git_token
 
 tap_gui:
-  service_type: ClusterIP
-  app_config:
-    app:
-      baseUrl: http://tap-gui.$tap_domain
-    catalog:
-      locations:
-        - type: url
-          target: $catalog_info 
-    backend:
-      baseUrl: http://$tap_domain:7000
-      cors:
-        origin: http://$tap_domain:7000
+  service_type: LoadBalancer
      
 contour:
   infrastructure_provider: aws
