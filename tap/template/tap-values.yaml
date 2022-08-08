@@ -24,19 +24,6 @@ ootb_supply_chain_basic:
   - host: github.com
     token: $git_token
 
-tap_gui:
-  service_type: ClusterIP
-  app_config:
-    app:
-      baseUrl: http://tap-gui.$domain
-    catalog:
-      locations:
-        - type: url
-          target: $catalog_info 
-    backend:
-      baseUrl: http://$domain:7000
-      cors:
-        origin: http://$domain:7000
         
 
 metadata_store:
