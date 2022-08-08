@@ -2,10 +2,15 @@ profile: full
 
 shared:
   ingress_domain: $domain
-
+appliveview:
+  ingressEnabled: "true"
+appliveview_connector:
+  backend:
+    sslDisabled: "true"
+    
 ceip_policy_disclosed: true
 buildservice:
-  kp_default_repository: $HARBOR_DOMAIN
+  kp_default_repository: $HARBOR_DOMAIN/tbs
   kp_default_repository_username: $HARBOR_USER
   kp_default_repository_password: $HARBOR_PWD
 
@@ -42,7 +47,5 @@ scanning:
     url: "" # Disable embedded integration since it's deprecated
 
 grype:
-  namespace: $tap_namespace
-  targetImagePullSecret: "tap-registry"
-  metadataStore:
-    url: "https://metadata-store-app.metadata-store.svc.cluster.local:8443"
+  namespace: "dev"
+  targetImagePullSecret: "registry-credentials"
