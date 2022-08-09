@@ -1,12 +1,7 @@
 profile: full
 
 shared:
-  ingress_domain: $domain
-appliveview:
-  ingressEnabled: "true"
-appliveview_connector:
-  backend:
-    sslDisabled: "true"
+  ingress_domain: $tap_domain
     
 ceip_policy_disclosed: true
 buildservice:
@@ -32,12 +27,12 @@ tap_gui:
     catalog:
       locations:
         - type: url
-          target: $catalog_info 
+          target: $catalog_info
     backend:
       baseUrl: http://$tap_domain:7000
       cors:
         origin: http://$tap_domain:7000
-        
+     
 contour:
   infrastructure_provider: aws
   envoy:
