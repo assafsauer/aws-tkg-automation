@@ -2,11 +2,6 @@ profile: full
 
 shared:
   ingress_domain: $domain
-appliveview:
-  ingressEnabled: "true"
-appliveview_connector:
-  backend:
-    sslDisabled: "true"
     
 ceip_policy_disclosed: true
 buildservice:
