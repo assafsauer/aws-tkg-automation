@@ -16,8 +16,7 @@ ootb_supply_chain_basic:
     server: $HARBOR_DOMAIN
     repository: "tap/supply-chain"
   gitops:
-  - host: github.com
-    token: $git_token
+    ssh_secret: ""
 
 tap_gui:
   service_type: LoadBalancer
