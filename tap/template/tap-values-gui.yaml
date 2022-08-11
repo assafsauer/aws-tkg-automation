@@ -2,13 +2,18 @@ profile: full
 
 shared:
   ingress_domain: $tap_domain
-    
+appliveview:
+  ingressEnabled: "true"
+appliveview_connector:
+  backend:
+    sslDisabled: "true"
+
 ceip_policy_disclosed: true
 buildservice:
   kp_default_repository: $HARBOR_DOMAIN/build-service/tbs
   kp_default_repository_username: $HARBOR_USER
   kp_default_repository_password: $HARBOR_PWD
-
+  
 supply_chain: basic
 
 ootb_supply_chain_basic:
@@ -16,23 +21,30 @@ ootb_supply_chain_basic:
     server: $HARBOR_DOMAIN
     repository: "tap/supply-chain"
   gitops:
-  - host: github.com
-    token: $git_token
+    server_address: https://github.com/
+    ssh_secret: git-ssh
+    repository_owner: assafsauer
+    repository_name: spring-petclinic-accelerators 
 
 tap_gui:
   service_type: LoadBalancer
   app_config:
     app:
       baseUrl: http://tap-gui.$tap_domain
+    integrations:
+      github:
+        - host: github.com
+          token: $git_token
     catalog:
       locations:
         - type: url
-          target: $catalog_info
+          target:  $catalog_info
     backend:
       baseUrl: http://$tap_domain:7000
       cors:
         origin: http://$tap_domain:7000
-     
+
+
 contour:
   infrastructure_provider: aws
   envoy:
@@ -40,9 +52,16 @@ contour:
       aws:
         LBType: nlb     
 
+cnrs:
+  provider: local
+  domain_name: "source-lab.io"
+  # Fix domain template for TSL certficates
+  domain_template: "{{.Name}}-{{.Namespace}}.{{.Domain}}"
+
 metadata_store:
   ns_for_export_app_cert: $tap_namespace
   app_service_type: LoadBalancer
+
 
 scanning:
   metadataStore:
@@ -51,3 +70,9 @@ scanning:
 grype:
   namespace: "dev"
   targetImagePullSecret: "registry-credentials"
+
+# Temporay fix for 1.2
+package_overlays:
+- name: tap-gui
+  secrets:
+  - name: k8s-reader-overlay
