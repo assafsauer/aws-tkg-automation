@@ -23,8 +23,8 @@ ootb_supply_chain_basic:
   gitops:
     server_address: https://github.com/
     ssh_secret: git-ssh
-    repository_owner: assafsauer
-    repository_name: spring-petclinic-accelerators 
+    repository_owner: $repo_owner
+    repository_name: $repo_name 
 
 tap_gui:
   service_type: LoadBalancer
