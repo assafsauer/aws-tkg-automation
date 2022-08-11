@@ -1,0 +1,6 @@
+#@ load("@ytt:overlay", "overlay")
+#@overlay/match by=overlay.subset({"kind": "ClusterRole", "metadata": {"name": "k8s-reader"}}), expects="1+"
+---
+rules:
+  #@overlay/match by=overlay.subset({"apiGroups": ["source.apps.tanzu.vmware.com"]})
+  - resources: ['mavenartifacts']
