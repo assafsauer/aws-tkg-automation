@@ -30,7 +30,7 @@ tap_gui:
   service_type: LoadBalancer
   app_config:
     app:
-        baseUrl: http://$tap_domain
+        baseUrl: http://$tap_domain:7000
     integrations:
       github: 
         - host: github.com
