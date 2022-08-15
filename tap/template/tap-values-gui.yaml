@@ -1,7 +1,7 @@
 profile: full
 
 shared:
-  ingress_domain: $tap_domain
+  ingress_domain: $domain
 appliveview:
   ingressEnabled: "true"
 appliveview_connector:
