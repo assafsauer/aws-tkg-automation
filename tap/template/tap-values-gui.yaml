@@ -50,7 +50,7 @@ contour:
   envoy:
     service:
       aws:
-        LBType: nlb     
+        LBType: nlb
 
 cnrs:
   provider: local
