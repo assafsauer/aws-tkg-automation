@@ -30,20 +30,21 @@ tap_gui:
   service_type: LoadBalancer
   app_config:
     app:
-      baseUrl: http://tap-gui.$tap_domain
+        baseUrl: http://$tap_domain
     integrations:
-      github:
+      github: 
         - host: github.com
           token: $git_token
     catalog:
       locations:
         - type: url
-          target:  $catalog_info
+          # Catalog repository
+          target: $catalog_info
     backend:
-      baseUrl: http://$tap_domain:7000
-      cors:
-        origin: http://$tap_domain:7000
-
+        baseUrl: http://$tap_domain:7000
+        cors:
+            origin: http://$tap_domain:7000
+            
 
 contour:
   infrastructure_provider: aws
