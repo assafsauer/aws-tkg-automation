@@ -55,7 +55,7 @@ contour:
 
 cnrs:
   provider: local
-  domain_name: "source-lab.io"
+  domain_name: apps.$domain
   # Fix domain template for TSL certficates
   domain_template: "{{.Name}}-{{.Namespace}}.{{.Domain}}"
 
