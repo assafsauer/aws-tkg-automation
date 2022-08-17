@@ -9,16 +9,16 @@ cluster=tap-c3
 export tap_namespace=dev
 
 
-export HARBOR_USER=xxx
-export HARBOR_PWD=xxx
-export HARBOR_DOMAIN=harbor.domain.com
+export HARBOR_USER=tanzu
+export HARBOR_PWD=password
+export HARBOR_DOMAIN=harbor.domain
 
 export INSTALL_REGISTRY_HOSTNAME=registry.tanzu.vmware.com
-export INSTALL_REGISTRY_USERNAME=xxx
-export INSTALL_REGISTRY_PASSWORD=xx
+export INSTALL_REGISTRY_USERNAME=user
+export INSTALL_REGISTRY_PASSWORD=pass
 
-export token=xxx
-export domain=xxxx
+export token=pivotal.token
+export domain=my-domain
 
 
 ###  TAP Version ####
@@ -30,9 +30,10 @@ essential==1263760
 
 
 ### optional: TAP GUI ####
-export git_token=xxx
+export git_token=my-git-tkoen
 export catalog_info=https://github.com/assafsauer/tap-catalog/blob/main/catalog-info.yaml
-
+export repo_owner=github_name
+export  repo_name=spring-petclinic-accelerators 
 sshkey=xxx
 
 ################## Download TAP packeges ##################
@@ -92,6 +93,17 @@ kubectl create ns $tap_namespace
 
 wget -N https://raw.githubusercontent.com/assafsauer/aws-tkg-automation/master/tap/template/storage-class.yml
 kubectl apply -f storage-class.yml  
+
+### git token secret ###
+wget -N https://raw.githubusercontent.com/assafsauer/aws-tkg-automation/master/tap/template/git-secret.yml
+envsubst <  git-secret.yml > git-secret.yaml 
+kubectl apply -f git-secret.yaml -n $tap_namespace
+
+
+### rbac overlay workaround for 1.2 ###
+wget -N https://raw.githubusercontent.com/assafsauer/aws-tkg-automation/master/tap/template/rbac.overlay.yml
+envsubst <  rbac.overlay.yml > rbac.overlay.yaml
+kubectl create secret generic k8s-reader-overlay --from-file=rbac.overlay.yaml -n tap-install
 
 ### cluster essential ####
 
@@ -181,6 +193,11 @@ tanzu secret registry add harbor-registry -y \
 ### temp workaround for the "ServiceAccountSecretError" issue
 kubectl create secret docker-registry registry-credentials --docker-server=${HARBOR_DOMAIN} --docker-username=${HARBOR_USER} --docker-password=${HARBOR_PWD} -n tap-install 
 
+kubectl create secret docker-registry registry-credentials --docker-server=${HARBOR_DOMAIN} --docker-username=${HARBOR_USER} --docker-password=${HARBOR_PWD} -n $tap_namespace
+
+kubectl create secret docker-registry harbor-registry --docker-server=${HARBOR_DOMAIN} --docker-username=${HARBOR_USER} --docker-password=${HARBOR_PWD} -n dev
+
+
 echo "your harbor cred"
 kubectl get secret registry-credentials --output="jsonpath={.data.\.dockerconfigjson}" | base64 --decode
 
@@ -225,4 +242,3 @@ echo *app.$domain "pointing to" $ip
 wget -N https://raw.githubusercontent.com/assafsauer/aws-tkg-automation/master/tap/template/tap-values-gui.yaml
 envsubst < tap-values-gui.yaml > tap-gui-final-val.yml
 tanzu package installed update --install tap -p tap.tanzu.vmware.com -v $tap_version -n tap-install --poll-timeout 30m -f tap-gui-final-val.yml 
-
