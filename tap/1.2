@@ -36,6 +36,12 @@ export repo_owner=github_name
 export  repo_name=spring-petclinic-accelerators 
 sshkey=xxx
 
+
+### provider ###
+export infrastructure_provider=aws
+export LBType=nlb
+
+
 ################## Download TAP packeges ##################
 ###########################################################
 
@@ -102,8 +108,9 @@ kubectl apply -f git-secret.yaml -n $tap_namespace
 
 ### rbac overlay workaround for 1.2 ###
 wget -N https://raw.githubusercontent.com/assafsauer/aws-tkg-automation/master/tap/template/rbac.overlay.yml
-envsubst <  rbac.overlay.yml > rbac.overlay.yaml
-kubectl create secret generic k8s-reader-overlay --from-file=rbac.overlay.yaml -n tap-install
+#envsubst <  rbac.overlay.yml > rbac.overlay.yaml
+kubectl create secret generic k8s-reader-overlay --from-file=rbac.overlay.yml -n tap-install
+
 
 ### cluster essential ####
 
@@ -230,6 +237,8 @@ if [ "$REPLY" != "yes" ]; then
 fi
 
 
+
+
 tap_domain=$(kubectl get svc -n tap-gui |awk 'NR=='2'{print $4}')
 export tap_domain=$tap_domain
 
@@ -242,3 +251,23 @@ echo *app.$domain "pointing to" $ip
 wget -N https://raw.githubusercontent.com/assafsauer/aws-tkg-automation/master/tap/template/tap-values-gui.yaml
 envsubst < tap-values-gui.yaml > tap-gui-final-val.yml
 tanzu package installed update --install tap -p tap.tanzu.vmware.com -v $tap_version -n tap-install --poll-timeout 30m -f tap-gui-final-val.yml 
+
+
+read -p "would you like to add testing and scan to the supplychain ? (enter: yes to continue)"
+if [ "$REPLY" != "yes" ]; then
+   exit
+fi
+
+#### scan and tests #####
+wget -N https://raw.githubusercontent.com/assafsauer/aws-tkg-automation/master/tap/template/scanpolicy.yml
+kubectl apply -f scanpolicy.yml -n $tap_namespace
+
+wget -N https://raw.githubusercontent.com/assafsauer/aws-tkg-automation/master/tap/template/tekton.yml
+kubectl apply -f tekton.yml -n $tap_namespace
+
+wget -N https://raw.githubusercontent.com/assafsauer/aws-tkg-automation/master/tap/template/tap-test-scan.yml
+envsubst < tap-test-scan.yml > tap-test-scan.yaml
+tanzu package installed update --install tap -p tap.tanzu.vmware.com -v $tap_version -n tap-install --poll-timeout 30m -f tap-test-scan.yaml 
+
+echo "TAP is Ready to go"
+
