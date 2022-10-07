@@ -32,6 +32,9 @@ rules:
 - apiGroups: [source.apps.tanzu.vmware.com]
   resources: [imagerepositories]
   verbs: ['*']
+- apiGroups: ["apps"] # "" indicates the core API group
+  resources: ["deployments"]
+  verbs: ['*']
 - apiGroups: [carto.run]
   resources: [deliverables, runnables]
   verbs: ['*']
