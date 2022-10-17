@@ -1,0 +1,41 @@
+apiVersion: carto.run/v1alpha1
+kind: ClusterDeploymentTemplate
+metadata:
+  name: app-deploy
+spec:
+  # values that will be read from the deployed object
+  observedCompletion:
+    
+    # If this condition is met the template will expose to the Delivery the
+    # `deployment` field that was passed in by the Delivery
+    succeeded:
+    
+      # path on the object that is inspected
+      key: '.status.conditions[?(@.type=="ReconcileSucceeded")].status'
+    
+      # value that must match what is found at the above path
+      value: 'True'
+    
+    # If this condition is met, the Deliverable status will show as not Ready
+    failed:
+      key: '.status.conditions[?(@.type=="ReconcileSucceeded")].status'
+      value: 'False'
+
+  # the definition of the object to deploy
+  template:
+    apiVersion: kappctrl.k14s.io/v1alpha1
+    kind: App
+    metadata:
+      name: $(deliverable.metadata.name)$
+    spec:
+      serviceAccountName: default
+      fetch:
+        - http:
+    
+            # an example of a field leveraging the Deployment passed in by the Delivery
+            url: $(deployment.url)$
+    
+      template:
+        - ytt: {}
+      deploy:
+        - kapp: {}
