@@ -1,0 +1,12 @@
+apiVersion: carto.run/v1alpha1
+kind: Deliverable
+metadata:
+  name: gitops
+  labels:
+    app.tanzu.vmware.com/workload-type: deliver # <=== must match the selector on a Delivery
+spec:
+  source:
+    git:
+      url:  https://github.com/assafsauer/Gitops-tap # <=== the gitops repo
+      ref:
+        branch: main # <=== the gitops branch
