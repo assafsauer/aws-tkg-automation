@@ -71,7 +71,7 @@ spec:
       value:
         ca_cert_data: ""
         repository: tap/supply-chain
-        server: $HARBOR_DOMAIN
+        server: harbor.source-lab.io
     - default: default
       name: clusterBuilder
     - default: ./Dockerfile
@@ -124,7 +124,7 @@ spec:
       value:
         ca_cert_data: ""
         repository: tap/supply-chain
-        server: HARBOR_DOMAIN
+        server: harbor.source-lab.io
     templateRef:
       kind: ClusterTemplate
       name: config-writer-and-pull-requester-template
