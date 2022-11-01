@@ -104,7 +104,7 @@ gzip -d velero-linux-v1.7.0+vmware.1.gz
 
 
 cd cli
-sudo install core/v0.11.1/tanzu-core-linux_amd64 /usr/local/bin/tanzu
+sudo install core/v0.*/tanzu-core-linux_amd64 /usr/local/bin/tanzu
 
 cd ..
 
