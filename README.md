@@ -65,6 +65,7 @@ terraform init
 terraform plan 
 terraform apply 
 
+## note: make sure to "sudo su" for TANZU CLI 
 ```
 ## PART 2: Automating TAP installation 
 
